@@ -912,9 +912,11 @@ class MoneybirdApi {
 		$sendinfo->invoice_id = $invoice->id;
 
 		// Send
-		$this->request(
+		$response = $this->request(
 			'invoices/' . $invoice->id . '/send_invoice', 'PUT', $sendinfo
 		);
+
+		$invoice->fromXML($response);
 	}
 
 	/**
