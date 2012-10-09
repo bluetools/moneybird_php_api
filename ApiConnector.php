@@ -141,7 +141,6 @@ class ApiConnector {
 		}
 		
 		$this->baseUri = 'https://' . $clientName . '.moneybird.nl/api/v'.self::API_VERSION;
-		$this->login();
 	}
 	
 	/**
@@ -166,7 +165,21 @@ class ApiConnector {
 	public function requestsLeft() {
 		return $this->transport->requestsLeft();
 	}
-	
+
+	/**
+	 * Login and send request to Moneybird
+	 *
+	 * @access protected
+	 * @return string
+	 * @param string $url
+	 * @param string $method (GET|POST|PUT|DELETE)
+	 * @param string $data
+	 */
+	protected function request($url, $method, $data = null) {
+		$this->login();
+		return $this->doRequest($url, $method, $data);
+	}
+
 	/**
 	 * Send request to Moneybird
 	 * 
@@ -176,7 +189,7 @@ class ApiConnector {
 	 * @param string $method (GET|POST|PUT|DELETE)
 	 * @param string $data
 	 */
-	protected function request($url, $method, $data = null) {
+	protected function doRequest($url, $method, $data = null) {
 		try {
 			$response = $this->transport->send(
 				$url,
@@ -430,7 +443,7 @@ class ApiConnector {
 	public function getCurrentSession() {
 		if (is_null($this->currentSession)) {
 			$this->currentSession = $this->mapper->mapFromStorage(
-				$this->request($this->buildUrl(new CurrentSession()), 'GET')
+				$this->doRequest($this->buildUrl(new CurrentSession()), 'GET')
 			);
 		}
 		if (!($this->currentSession instanceof CurrentSession)) {
