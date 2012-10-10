@@ -40,7 +40,15 @@ class SimpleXMLElement extends \SimpleXMLElement {
 	 * @return SimpleXMLElement The addChild method returns a SimpleXMLElement object representing the child added to the XML node.
 	 */
 	public function addChild ($key, $value = null, $namespace = null) {
-		return parent::addChild($key, str_replace('&', '&amp;', $value), $namespace);
+		return parent::addChild(
+			$key,
+			str_replace(
+				array("&", "<", ">", "\"", "'"),
+				array("&amp;", "&lt;", "&gt;", "&quot;", "&apos;"),
+				$value
+			),
+			$namespace
+		);
     } 
 
 	/**
