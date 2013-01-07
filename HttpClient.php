@@ -62,10 +62,10 @@ class HttpClient implements Transport {
 	 * Verify host and peer
 	 * 
 	 * @access protected
-	 * @var bool
+	 * @var int
 	 * @static
 	 */
-	public static $verifyHostAndPeer = true;
+	public static $verifyHostAndPeer = 2;
 	
 	/**
 	 * Creates connector object
